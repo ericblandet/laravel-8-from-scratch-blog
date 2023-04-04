@@ -2,61 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\File;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-// use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Database\Eloquent\Model;
-
-class Post
+class Post extends Model
 {
+    use HasFactory;
 
-    // * from PHP 8, the following lines can be shortened thanks to Class constructor property promotion:
-    // * https://php.watch/versions/8.0/constructor-property-promotion
-    /* 
-    public $title;
-    public $excerpt;
-    public $date;
-    public $body;
+    protected $fillable = ['title', 'slug', 'excerpt', 'body', 'user_id'];
 
-    public function __construct($title, $excerpt, $date, $body)
+    protected $with = ['category', 'author'];
+
+    public function category()
     {
-        $this->title = $title;
-        $this->excerpt = $excerpt;
-        $this->date = $date;
-        $this->body = $body;
-    }
-    */
-
-    // * This is called Class constructor property promotion
-    public function __construct(
-        public $title,
-        public $excerpt,
-        public $date,
-        public $body,
-        public $slug
-    ) {
+        return $this->belongsTo(Category::class);
     }
 
-    public static function all()
+    public function author()
     {
-        return cache()->rememberForever('post.all', function () {
-            return collect(File::files(resource_path("posts")))
-                ->map(fn ($file) => YamlFrontMatter::parseFile($file))
-                ->map(fn ($document) => new Post(
-                    $document->title,
-                    $document->excerpt,
-                    $document->date,
-                    $document->body(),
-                    $document->slug,
-                ))
-                ->sortByDesc('date');
-        });
-    }
-
-    public static function find($slug)
-    {
-        return static::all()->firstOrFail('slug', $slug);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
