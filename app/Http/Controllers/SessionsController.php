@@ -20,10 +20,10 @@ class SessionsController extends Controller
             'password' => 'required'
         ]);
 
-
         // attempt to authenticateand log the user in
         // based on the provided credentials
         if (auth()->attempt($attributes)) {
+            session()->regenerate(); // in order to prevent session fixation of a hacker
             $user = auth()->user();
             return redirect('/')->with('success', "Welcome, {$user->name}!");
         }
