@@ -10,7 +10,8 @@
                         alt="" />
 
                     <p class="mt-4 block text-xs text-gray-400">
-                        Published <time>{{ $post->created_at->diffForHumans() }}</time>
+                        Published <time>{{ $post->created_at->diffForHumans() }}
+                        </time>
                     </p>
 
                     <div class="mt-4 flex items-center text-sm lg:justify-center">

@@ -71,6 +71,7 @@
                 <input class="bg-transparent text-sm font-semibold placeholder-black"
                     name="search"
                     type="text"
+                    value="{{ request('search') }}"
                     placeholder="Find something">
             </form>
         </div>
