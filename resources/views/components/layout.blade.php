@@ -7,9 +7,13 @@
 
 <link href="https://fonts.gstatic.com"
     rel="preconnect">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+<link href="https://fonts.googleapis.com/css2?fakmily=Open+Sans:wght@400;600;700&display=swap"
     rel="stylesheet">
-
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 
 <body style="font-family: Open Sans, sans-serif">
     <section class="px-6 py-8">
@@ -38,7 +42,7 @@
                         href="/login">Login</a>
                 @endauth
                 <a class="ml-3 rounded-full bg-blue-500 py-3 px-5 text-xs font-semibold uppercase text-white"
-                    href="#">
+                    href="#newsletter">
                     Subscribe for updates
                 </a>
             </div>
@@ -46,7 +50,8 @@
 
         {{ $slot }}
 
-        <footer class="mt-16 rounded-xl border border-black border-opacity-5 bg-gray-100 py-16 px-10 text-center">
+        <footer class="mt-16 rounded-xl border border-black border-opacity-5 bg-gray-100 py-16 px-10 text-center"
+            id="newsletter">
             <img class="mx-auto -mb-6"
                 src="/images/lary-newsletter-icon.svg"
                 alt=""
@@ -59,18 +64,28 @@
 
                     <form class="text-sm lg:flex"
                         method="POST"
-                        action="#">
-                        <div class="flex items-center lg:py-3 lg:px-5">
-                            <label class="hidden lg:inline-block"
-                                for="email">
-                                <img src="/images/mailbox-icon.svg"
-                                    alt="mailbox letter">
-                            </label>
+                        action="/newsletter">
+                        @csrf
+                        <div>
 
-                            <input class="py-2 pl-4 focus-within:outline-none lg:bg-transparent lg:py-0"
-                                id="email"
-                                type="text"
-                                placeholder="Your email address">
+                            <div class="flex items-center lg:py-3 lg:px-5">
+                                <label class="hidden lg:inline-block"
+                                    for="email">
+                                    <img src="/images/mailbox-icon.svg"
+                                        alt="mailbox letter">
+                                </label>
+
+                                <input class="py-2 pl-4 focus-within:outline-none lg:bg-transparent lg:py-0"
+                                    id="email"
+                                    name="email"
+                                    type="text"
+                                    placeholder="Your email address">
+                            </div>
+                            @error('email')
+                                <div class="w-60">
+                                    <span class="text-xs text-red-500">{{ $message }}</span>
+                                </div>
+                            @enderror
                         </div>
 
                         <button
