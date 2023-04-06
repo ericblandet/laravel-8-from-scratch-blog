@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -23,11 +24,17 @@ class DatabaseSeeder extends Seeder
         $user1 = User::factory()->create([
             'name' => 'San Gohan',
             'username' => 'gohan',
+            'email' => 'san@gohan.dbz',
+            'password' => 'password'
         ]);
         $user2 = User::factory()->create([
             'name' => 'San Goten',
             'username' => 'goten',
+            'email' => 'san@goten.dbz',
+            'password' => 'password'
         ]);
+
+        User::factory(13)->create();
 
         $personal = Category::create([
             'name' => 'Personal',
@@ -45,13 +52,22 @@ class DatabaseSeeder extends Seeder
         ]);
 
         foreach ([$personal, $work, $family] as $category) {
-            foreach ([$user1, $user2] as $user) {
-                Post::factory(5)->create(
+            foreach (User::all()->random(3)->add($user1)->add($user2) as $user) {
+                $posts = Post::factory(rand(1, 3))->create(
                     [
                         'user_id' => $user->id,
                         'category_id' => $category->id
                     ]
                 );
+
+                foreach ($posts as $post) {
+                    for ($i = 0; $i < rand(1, 8); $i++) {
+                        Comment::factory()->create([
+                            'post_id' => $post,
+                            'user_id' => User::all()->random(1)->first()
+                        ]);
+                    }
+                }
             }
         }
 

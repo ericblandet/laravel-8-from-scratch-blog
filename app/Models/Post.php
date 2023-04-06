@@ -13,6 +13,11 @@ class Post extends Model
 
     protected $with = ['category', 'author'];
 
+
+    //* -------------- // 
+    //* Relationships  //
+    //* -------------- //
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -22,6 +27,16 @@ class Post extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    //* -------------- // 
+    //* Scope          //
+    //* -------------- //
+
 
     public function scopeFilter($query, array $filters)
     {
