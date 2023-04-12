@@ -6,7 +6,7 @@
         <div class="flex-1 lg:mr-8">
             {{-- todo --}}
             <img class="rounded-xl"
-                src="/images/illustration-1.png"
+                src="{{ $post->thumbnail ? asset('storage/' . $post->thumbnail) : '/images/illustration-1.png' }}"
                 alt="Blog Post illustration">
         </div>
 

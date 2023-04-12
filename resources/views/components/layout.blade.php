@@ -28,13 +28,40 @@
             </div>
             <div class="mt-8 flex items-center md:mt-0">
                 @auth
-                    <span class="text-xs font-bold uppercase">Welcome, {{ auth()->user()->name }}!</span>
-                    <form class="ml-6 text-xs font-semibold text-blue-500"
-                        action="/logout"
-                        method="post">
-                        @csrf
-                        <button type="submit">Log out</button>
-                    </form>
+                    <x-dropdown>
+                        <x-slot name="trigger">
+                            <button class="text-xs uppercase">👋 Welcome,
+                                {{ auth()->user()->name }} 🙂!</button>
+                        </x-slot>
+
+                        {{-- @if (auth()->user()->can('admin')) --}}
+                        {{-- @can('admin') --}}
+                        @admin
+                            <x-dropdown-item href="/admin/posts"
+                                :active="request()->is('admin/posts')">
+                                Dashboard
+                            </x-dropdown-item>
+                            <x-dropdown-item href="/admin/posts/create"
+                                :active="request()->is('admin/posts/create')">
+                                New Post
+                            </x-dropdown-item>
+                        @endadmin
+                        {{-- @endcan --}}
+                        {{-- @endif --}}
+
+                        <x-dropdown-item href="#"
+                            x-data="{}"
+                            @click.prevent="document.querySelector('#logout-form').submit()">
+                            Logout
+                        </x-dropdown-item>
+
+                        <form class="hidden"
+                            id="logout-form"
+                            action="/logout"
+                            method="post">
+                            @csrf
+                        </form>
+                    </x-dropdown>
                 @else
                     <a class="text-xs font-bold uppercase"
                         href="/register">Register</a>

@@ -9,7 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug', 'excerpt', 'body', 'user_id'];
+    protected $fillable = ['title', 'slug', 'excerpt', 'body', 'user_id', 'category_id', 'thumbnail'];
 
     protected $with = ['category', 'author'];
 
@@ -36,7 +36,6 @@ class Post extends Model
     //* -------------- // 
     //* Scope          //
     //* -------------- //
-
 
     public function scopeFilter($query, array $filters)
     {
